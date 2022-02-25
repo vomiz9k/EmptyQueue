@@ -1,0 +1,6 @@
+.vscode/
+target
+frontend/build
+frontend/node
+frontend/node_modules
+frontend/yarn.lock
