@@ -18,11 +18,6 @@ import java.security.Principal;
 public class LoginController {
     @GetMapping("/check_login")
     public @ResponseBody Map<String, Boolean> checkAuth(Principal principal) {
-        if(principal == null) {
-            System.out.println("NULL");
-        } else {
-            System.out.println(principal.getName());
-        }
         return Collections.singletonMap("success", principal != null);
     }
 }

@@ -40,7 +40,13 @@ class QueueList extends Component {
                 'Access-Control-Allow-Origin': 'origin-list'
             }
         }).then(() => {
-            this.componentDidMount();
+            let updatedQueues = [...this.state.queues].map((queue, index) => {
+                if (index + 1 === id) {
+                    queue.current = (queue.current + 1) % queue.participants.length;
+                }
+                return queue;
+            });
+            this.setState({queues: updatedQueues});
         });
     }
 

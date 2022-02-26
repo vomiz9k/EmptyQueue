@@ -22,11 +22,6 @@ class App extends Component {
         isLoggedIn:
           isLoggenIn
       }));
-      console.log("CHANGE!!!");
-      console.log(this.state.isLoggedIn)
-      fetch("/check_login").then(response => response.json()).then(response => {
-        console.log("fetched " + response.success)
-      })
     };
     // localStorage.removeItem("isLoggedIn");
     const isLoggedIn = localStorage.getItem("isLoggedIn") === "true"
@@ -36,7 +31,6 @@ class App extends Component {
     };
 
     fetch("/check_login").then(response => response.json()).then(response => {
-      console.log("fetched " + this.state.isLoggedIn + " " + response.success);
       this.state = {
         isLoggedIn: response.success && isLoggedIn,
         change: this.change
@@ -64,7 +58,7 @@ class App extends Component {
                 ))}/>
             <Route path='/perform_login' component={LoginPage}/>
             <Route path='/perform_logout' render={() => {
-              fetch ("/perform_logout", {method: "POST"}).then(response => response.body).then(response => {console.log(response);this.change(false);}).catch(e => console.log("jopa " + e));
+              fetch ("/perform_logout", {method: "POST"}).then(this.change(false));
               return <Redirect to="/"/>
             }}/>
           </Switch>

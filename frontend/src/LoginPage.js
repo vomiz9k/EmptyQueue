@@ -2,19 +2,9 @@ import React, { Component } from 'react';
 import './App.css';
 import AppNavbar from './AppNavbar';
 import { FormGroup, Button} from 'reactstrap';
-import PropTypes from 'prop-types'
 import "./LoginPage.css";
 import { globalStateContext } from "./Context"
 
-// In production, we register a service worker to serve assets from local cache.
-
-// This lets the app load faster on subsequent visits in production, and gives
-// it offline capabilities. However, it also means that developers (and users)
-// will only see deployed updates on the "N+1" visit to a page, since previously
-// cached resources are updated in the background.
-
-// To learn more about the benefits of this model, read https://goo.gl/KwvDNy.
-// This link also includes instructions on opting out of this behavior.
 
 window.getCsrfToken = () => {
     return document.cookie.replace(/(?:(?:^|.*;\s*)XSRF-TOKEN\s*\s*([^;]*).*$)|^.*$/, '$1');
@@ -45,15 +35,6 @@ class Input extends Component {
   }
 }
 
-Input.propTypes = {
-  name: PropTypes.string,
-  placeholder: PropTypes.string,
-  type: PropTypes.string,
-  className: PropTypes.string,
-  handleError: PropTypes.func,
-  value: PropTypes.string
-}
-
 class Forms extends Component {
 
   constructor(props){
@@ -70,8 +51,6 @@ class Forms extends Component {
 
   handleSubmit = (event) => {
     event.preventDefault()
-    // this.change();
-    // console.log("hey")
     if(!this.state.errcount) {
       const data = new FormData(this.form)
       fetch(this.form.action, {
@@ -137,13 +116,6 @@ class Forms extends Component {
   }
 }
 
-Forms.propTypes = {
-  name: PropTypes.string,
-  action: PropTypes.string,
-  method: PropTypes.string,
-  inputs: PropTypes.array,
-  error: PropTypes.string
-}
 
 const inputs = [{
     name: "username",
