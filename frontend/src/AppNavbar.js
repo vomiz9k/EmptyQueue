@@ -19,13 +19,13 @@ export default class AppNavbar extends Component {
         return <Navbar color="dark" dark expand="md">
             <NavbarBrand/>
             <NavbarBrand tag={Link} to="/">EmptyQueue</NavbarBrand>
-             <globalStateContext.Consumer>
+             {/* <globalStateContext.Consumer>
                 {({isLoggedIn}) => (
                 <NavItem className="ms-auto">
                     { !isLoggedIn ? <NavLink href="/perform_login/">Login</NavLink> : <NavLink href="/perform_logout/">Logout</NavLink> }
                 </NavItem>
                 )}
-            </globalStateContext.Consumer>
+            </globalStateContext.Consumer> */}
         </Navbar>;
     }
 }

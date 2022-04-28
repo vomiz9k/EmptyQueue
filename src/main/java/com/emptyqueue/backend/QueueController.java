@@ -10,11 +10,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
-import java.security.Principal;
 
 @RestController
 @RequestMapping("/queue")
-@CrossOrigin(origins = "http://localhost:3000", methods = {RequestMethod.OPTIONS, RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE}, allowedHeaders = "*", allowCredentials = "true")
+@CrossOrigin(methods = {RequestMethod.OPTIONS, RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE}, allowedHeaders = "*")
 public class QueueController {
 
     private final QueueRepository queueRepository;
@@ -24,39 +23,27 @@ public class QueueController {
     }
 
     @GetMapping
-    public ResponseEntity getQueues(Principal principal) {
-        if (principal == null) {
-            return ResponseEntity.badRequest().build();
-        }
-        return ResponseEntity.ok(queueRepository.findAllByOwner(principal.getName()));
+    public ResponseEntity getQueues() {
+        return ResponseEntity.ok(queueRepository.findAllByOwner("user2"));
     }
     
     @GetMapping("/{id}")
-    public ResponseEntity getQueue(@PathVariable Long id, Principal principal) {
+    public ResponseEntity getQueue(@PathVariable Long id) {
         var queue = queueRepository.findById(id).orElseThrow(RuntimeException::new);
-        if (principal == null || principal.getName() != queue.getOwner()) {
-            return ResponseEntity.badRequest().build();
-        }
         return ResponseEntity.ok(queue);
     }
 
 
     @PostMapping
-    public ResponseEntity createQueue(@RequestBody Queue queue, Principal principal) throws URISyntaxException {
-        if (principal == null) {
-            return ResponseEntity.badRequest().build();
-        }
-        queue.setOwner(principal.getName());
+    public ResponseEntity createQueue(@RequestBody Queue queue) throws URISyntaxException {
+        queue.setOwner("user2");
         Queue savedQueue = queueRepository.save(queue);
         return ResponseEntity.created(new URI("/queue/" + savedQueue.getId())).body(savedQueue);
     }
 
     @PostMapping("/{id}")
-    public ResponseEntity editQueue(@PathVariable Long id, @RequestBody Queue queue, Principal principal) throws URISyntaxException {
+    public ResponseEntity editQueue(@PathVariable Long id, @RequestBody Queue queue) throws URISyntaxException {
         var currentQueue = queueRepository.findById(id).orElseThrow(RuntimeException::new);
-        if (principal == null || principal.getName() != currentQueue.getOwner()) {
-            return ResponseEntity.badRequest().build();
-        }
         currentQueue.setName(queue.getName());
         currentQueue.setParticipants(queue.getParticipants());
         currentQueue.setCurrent(0);
@@ -66,11 +53,8 @@ public class QueueController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity iterateQueue(@PathVariable Long id, Principal principal) {
+    public ResponseEntity iterateQueue(@PathVariable Long id) {
         Queue currentQueue = queueRepository.findById(id).orElseThrow(RuntimeException::new);
-        if (principal == null || principal.getName() != currentQueue.getOwner()) {
-            return ResponseEntity.badRequest().build();
-        }        
         currentQueue.iterate();
         currentQueue = queueRepository.save(currentQueue);
 
@@ -78,11 +62,8 @@ public class QueueController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteQueue(@PathVariable Long id, Principal principal) {
+    public ResponseEntity deleteQueue(@PathVariable Long id) {
         Queue currentQueue = queueRepository.findById(id).orElseThrow(RuntimeException::new);
-        if (principal == null || principal.getName() != currentQueue.getOwner()) {
-            return ResponseEntity.badRequest().build();
-        } 
         queueRepository.deleteById(id);
         return ResponseEntity.ok().build();
     }

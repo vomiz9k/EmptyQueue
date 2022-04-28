@@ -11,20 +11,23 @@ class QueueList extends Component {
         this.remove = this.remove.bind(this);
     }
 
-    componentDidMount() {
-        fetch('/queue')
-            .then(response => response.json())
-            .then(data => this.setState({queues: data}));
+    async componentDidMount() {
+        while(true) {
+            await fetch('/queue')
+                .then(response => response.json())
+                .then(data => {
+                    if (this.state.queues !== data) {
+                        this.setState({queues: data})
+                    }
+                });
+            await new Promise(resolve => setTimeout(resolve, 100));        
+        }
         
     }
 
     async remove(id) {
         await fetch(`/queue/${id}`, {
             method: 'DELETE',
-            // headers: {
-            //     'Accept': 'application/json',
-            //     'Content-Type': 'application/json'
-            // }
         }).then(() => {
             let updatedQueues = [...this.state.queues].filter(i => i.id !== id);
             this.setState({queues: updatedQueues});
@@ -37,7 +40,6 @@ class QueueList extends Component {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': 'origin-list'
             }
         }).then(() => {
             let updatedQueues = [...this.state.queues].map((queue, index) => {
