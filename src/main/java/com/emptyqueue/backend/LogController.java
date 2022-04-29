@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
-import org.javatuples.Pair;  
 
 @RestController
 @RequestMapping("/log")
