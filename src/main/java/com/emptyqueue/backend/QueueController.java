@@ -24,7 +24,7 @@ public class QueueController {
 
     @GetMapping
     public ResponseEntity getQueues() {
-        return ResponseEntity.ok(queueRepository.findAllByOwner("user2"));
+        return ResponseEntity.ok(queueRepository.findAll());
     }
     
     @GetMapping("/{id}")
