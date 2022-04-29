@@ -29,10 +29,7 @@ class QueueList extends Component {
     async remove(id) {
         await fetch(`/queue/${id}`, {
             method: 'DELETE',
-        }).then(() => {
-            let updatedQueues = [...this.state.queues].filter(i => i.id !== id);
-            this.setState({queues: updatedQueues});
-        });
+        })
     }
 
     async iterate(id) {
@@ -42,14 +39,6 @@ class QueueList extends Component {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
             }
-        }).then(() => {
-            let updatedQueues = [...this.state.queues].map((queue, index) => {
-                if (index + 1 === id) {
-                    queue.current = (queue.current + 1) % queue.participants.length;
-                }
-                return queue;
-            });
-            this.setState({queues: updatedQueues});
         });
     }
 
