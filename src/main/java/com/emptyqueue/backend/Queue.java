@@ -22,7 +22,6 @@ public class Queue {
     private String name;
     private String[] participants;
     private int current;
-    public LinkedList<String> logs;
 
     public Queue() {
     }
@@ -32,7 +31,6 @@ public class Queue {
         this.participants = participants;
         this.current = 0;
         this.owner = owner;
-        this.logs = new LinkedList<String>();
     }
 
     public Long getId() {
@@ -72,9 +70,6 @@ public class Queue {
     }
 
     public void iterate() {
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");  
-        LocalDateTime now = LocalDateTime.now();  
-        logs.addFirst(participants[current] + " iterated at " + dtf.format(now));
         current = (current + 1) % participants.length;
     }
 

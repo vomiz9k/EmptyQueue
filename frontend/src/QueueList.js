@@ -12,11 +12,11 @@ class QueueList extends Component {
     }
 
     async componentDidMount() {
-        while(true) {
+        while(true)
+         {
             await fetch('/queue')
                 .then(response => response.json())
                 .then(data => {
-                    console.log(data);
                     if (this.state.queues !== data) {
                         this.setState({queues: data})
                     }
@@ -56,11 +56,14 @@ class QueueList extends Component {
                     <ButtonGroup>
                         <Button size="sm" color="primary" onClick={() => {if (window.confirm('Are you sure you wish to iterate this queue?')) this.iterate(queue.id)}}>Iterate</Button>
                         <Button size="sm" color="success" onClick={() => {
-                            var logs = "";
-                            queue.logs.map(log => logs = logs + log + "\n");
-                            window.alert(logs)
+                            fetch(`/log/${queue.id}`).then(response => response.json()).then(
+                                logs => {
+                                    var str = "";
+                                    logs.map(log => str = str + log + "\n");
+                                    window.alert(str)
+                                }
+                            )
                         }}>Logs</Button>
-                        <Button size="sm" color="secondary" tag={Link} to={"/queue/" + queue.id}>Edit</Button>
                         <Button size="sm" color="danger" onClick={() => { if (window.confirm('Are you sure you wish to delete this queue?')) this.remove(queue.id)}}>Delete</Button>
                     </ButtonGroup>
                 </td>
