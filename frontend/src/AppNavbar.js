@@ -3,7 +3,7 @@ import {Navbar, NavbarBrand} from 'reactstrap';
 import {Link} from 'react-router-dom';
 
 function getRandomInt(max) {
-    return Math.floor(Math.random() * max);
+    return Math.floor(Math.random() * 0.999 * max);
 }
 
 var names = ["Andrey_lox", "Kirill_4mo", "Lexa_G@y", "Sanya_HuiSosi", "Kostya_ped1k", "Serega_gand0n"];
@@ -13,7 +13,7 @@ export default class AppNavbar extends Component {
         super(props);
         this.state = {isOpen: false};
         this.toggle = this.toggle.bind(this);
-        this.name = names[getRandomInt(5)];
+        this.name = names[getRandomInt(6)];
     }
 
     toggle() {
